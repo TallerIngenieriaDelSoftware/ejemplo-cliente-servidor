@@ -8,14 +8,14 @@ import java.util.HashSet;
 @XmlRootElement
 public class People {
     @XmlElement(name = "person")
-    private Collection<Person> people2;
+    private Collection<Person> people;
 
     public People() {
         super();
-        people2 = new HashSet<>();
+        people = new HashSet<>();
     }
 
     public People(Collection<Person> people) {
-        this.people2 = people;
+        this.people = people;
     }
 }

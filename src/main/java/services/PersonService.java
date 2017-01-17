@@ -23,7 +23,7 @@ public class PersonService {
     }
 
     @POST
-    @Consumes("application/xml")
+    @Consumes({"application/xml", "application/json"})
     @Produces({"application/xml", "application/json"})
     public Response create(Person person) {
         storage.create(person);

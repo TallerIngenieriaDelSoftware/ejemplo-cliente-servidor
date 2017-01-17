@@ -23,6 +23,12 @@ public class Person {
         this.postalAddress = postalAddress;
     }
 
+    public Person(String name, String surname, String nif) {
+        this.name = name;
+        this.surname = surname;
+        this.nif = nif;
+    }
+
     public String getNif() {
         return nif;
     }
