@@ -46,9 +46,7 @@ public class PersonServiceTest {
     public void createTest() {
         String nif = "123";
         // Primero lo borramos
-        target.path(nif)
-                .request()
-                .delete();
+        deleteByNif(nif);
 
         Person person = new Person("Óscar", "Belmonte", "123");
         Entity<Person> entity = Entity.entity(person, MediaType.APPLICATION_XML_TYPE);
@@ -65,14 +63,11 @@ public class PersonServiceTest {
         // Primero nos aseguramos que existe
         String nif = "123";
         Person person = new Person("Óscar", "Belmonte", nif);
-        Entity<Person> entity = Entity.entity(person, MediaType.APPLICATION_XML_TYPE);
-        Response response = target
-                .request(MediaType.APPLICATION_XML)
-                .post(entity);
+        createPerson(person);
 
-        response = target
+        Response response = target
                 .path(nif)
-                .request()
+                .request(MediaType.APPLICATION_XML)
                 .get();
 
         assertThat(response.getStatus(), is(Response.Status.OK.getStatusCode()));
@@ -84,16 +79,13 @@ public class PersonServiceTest {
         // Primero nos aseguramos que existe
         String nif = "123";
         Person person = new Person("Óscar", "Belmonte", nif);
-        Entity<Person> entity = Entity.entity(person, MediaType.APPLICATION_XML_TYPE);
-        Response response = target
-                .request()
-                .post(entity);
+        createPerson(person);
 
         Person updatedPerson = new Person("Óscar", "Belmonte Fernández", nif);
-        entity = Entity.entity(updatedPerson, MediaType.APPLICATION_XML_TYPE);
-        response = target
+        Entity<Person> entity = Entity.entity(updatedPerson, MediaType.APPLICATION_XML_TYPE);
+        Response response = target
                 .path(nif)
-                .request()
+                .request(MediaType.APPLICATION_XML)
                 .put(entity);
 
         assertThat(response.getStatus(), is(Response.Status.NO_CONTENT.getStatusCode()));
@@ -103,15 +95,13 @@ public class PersonServiceTest {
     public void updateNotFoundTest() {
         String nif = "123";
         // Primero lo borramos
-        target.path(nif)
-                .request()
-                .delete();
+        deleteByNif(nif);
 
         Person updatedPerson = new Person("Óscar", "Belmonte Fernández", nif);
         Entity<Person> entity = Entity.entity(updatedPerson, MediaType.APPLICATION_XML_TYPE);
         Response response = target
                 .path(nif)
-                .request()
+                .request(MediaType.APPLICATION_XML)
                 .put(entity);
 
         assertThat(response.getStatus(), is(Response.Status.NOT_FOUND.getStatusCode()));
@@ -122,14 +112,11 @@ public class PersonServiceTest {
         // Primero nos aseguramos que existe
         String nif = "123";
         Person person = new Person("Óscar", "Belmonte", nif);
-        Entity<Person> entity = Entity.entity(person, MediaType.APPLICATION_XML_TYPE);
-        Response response = target
-                .request()
-                .post(entity);
+        createPerson(person);
 
-        response = target
+        Response response = target
                 .path(nif)
-                .request()
+                .request(MediaType.APPLICATION_XML)
                 .delete();
 
         assertThat(response.getStatus(), is(Response.Status.NO_CONTENT.getStatusCode()));
@@ -139,9 +126,22 @@ public class PersonServiceTest {
     public void deleteNotFoundTest() {
         Response response = target
                 .path("DoesNotExist")
-                .request()
+                .request(MediaType.APPLICATION_XML)
                 .delete();
 
         assertThat(response.getStatus(), is(Response.Status.NOT_FOUND.getStatusCode()));
+    }
+
+    private void deleteByNif(String nif) {
+        target.path(nif)
+                .request(MediaType.APPLICATION_XML)
+                .delete();
+    }
+
+    private void createPerson(Person person) {
+        Entity<Person> entity = Entity.entity(person, MediaType.APPLICATION_XML_TYPE);
+        Response response = target
+                .request(MediaType.APPLICATION_XML)
+                .post(entity);
     }
 }
