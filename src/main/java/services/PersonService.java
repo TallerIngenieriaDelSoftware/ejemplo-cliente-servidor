@@ -18,8 +18,11 @@ public class PersonService {
 
     @GET
     @Produces({"application/xml", "application/json"})
-    public People retreiveAll() {
-        return storage.retrieveAll();
+    public Response retrieveAll() {
+        return Response
+                .status(Response.Status.OK)
+                .entity(storage.retrieveAll())
+                .build();
     }
 
     @POST
