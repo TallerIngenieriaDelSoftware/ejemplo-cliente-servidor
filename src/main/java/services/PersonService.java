@@ -30,9 +30,10 @@ public class PersonService {
     @Produces({"application/xml", "application/json"})
     public Response create(Person person) {
         storage.create(person);
+        Person found = storage.retrieve(person.getNif());
         return Response
-                .status(Response.Status.OK)
-                .entity(person)
+                .status(Response.Status.CREATED)
+                .entity(found)
                 .build();
     }
 
