@@ -36,7 +36,7 @@ public class PersonServiceTest {
     @Test
     public void retrieveNotFoundTest() {
         Response response = target
-                .path("DoesNotExists")
+                .path("DoesNotExist")
                 .request(MediaType.APPLICATION_XML)
                 .get();
         assertThat(response.getStatus(), is(Response.Status.NOT_FOUND.getStatusCode()));
@@ -133,5 +133,15 @@ public class PersonServiceTest {
                 .delete();
 
         assertThat(response.getStatus(), is(Response.Status.NO_CONTENT.getStatusCode()));
+    }
+
+    @Test
+    public void deleteNotFoundTest() {
+        Response response = target
+                .path("DoesNotExist")
+                .request()
+                .delete();
+
+        assertThat(response.getStatus(), is(Response.Status.NOT_FOUND.getStatusCode()));
     }
 }
