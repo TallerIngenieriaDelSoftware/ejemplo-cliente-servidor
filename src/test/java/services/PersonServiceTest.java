@@ -98,4 +98,22 @@ public class PersonServiceTest {
 
         assertThat(response.getStatus(), is(Response.Status.NO_CONTENT.getStatusCode()));
     }
+
+    @Test
+    public void updateNotFoundTest() {
+        String nif = "123";
+        // Primero lo borramos
+        target.path(nif)
+                .request()
+                .delete();
+
+        Person updatedPerson = new Person("Óscar", "Belmonte Fernández", nif);
+        Entity<Person> entity = Entity.entity(updatedPerson, MediaType.APPLICATION_XML_TYPE);
+        Response response = target
+                .path(nif)
+                .request()
+                .put(entity);
+
+        assertThat(response.getStatus(), is(Response.Status.NOT_FOUND.getStatusCode()));
+    }
 }
