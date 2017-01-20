@@ -6,6 +6,8 @@ import data.People;
 import javax.inject.Inject;
 
 public class PersonDAO implements PersonStorage {
+    public final static Person NOT_FOUND = new Person("Not found", "", "");
+
     @Inject
     private DataStorage storage;
 

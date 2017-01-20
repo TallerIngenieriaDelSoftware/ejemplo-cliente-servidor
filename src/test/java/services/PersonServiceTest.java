@@ -34,7 +34,7 @@ public class PersonServiceTest {
     }
 
     @Test
-    public void getNotFoundTest() {
+    public void retrieveNotFoundTest() {
         Response response = target
                 .path("DoesNotExists")
                 .request(MediaType.APPLICATION_XML)
@@ -44,12 +44,58 @@ public class PersonServiceTest {
 
     @Test
     public void createTest() {
+        String nif = "123";
+        // Primero lo borramos
+        target.path(nif)
+                .request()
+                .delete();
+
         Person person = new Person("Óscar", "Belmonte", "123");
         Entity<Person> entity = Entity.entity(person, MediaType.APPLICATION_XML_TYPE);
         Response response = target
                 .request(MediaType.APPLICATION_XML)
                 .post(entity);
+
         assertThat(response.getStatus(), is(Response.Status.CREATED.getStatusCode()));
         assertThat(response.readEntity(Person.class), is(person));
+    }
+
+    @Test
+    public void retrieveTest() {
+        // Primero nos aseguramos que existe
+        String nif = "123";
+        Person person = new Person("Óscar", "Belmonte", nif);
+        Entity<Person> entity = Entity.entity(person, MediaType.APPLICATION_XML_TYPE);
+        Response response = target
+                .request(MediaType.APPLICATION_XML)
+                .post(entity);
+
+        response = target
+                .path(nif)
+                .request()
+                .get();
+
+        assertThat(response.getStatus(), is(Response.Status.OK.getStatusCode()));
+        assertThat(response.readEntity(Person.class), is(person));
+    }
+
+    @Test
+    public void updateTest() {
+        // Primero nos aseguramos que existe
+        String nif = "123";
+        Person person = new Person("Óscar", "Belmonte", nif);
+        Entity<Person> entity = Entity.entity(person, MediaType.APPLICATION_XML_TYPE);
+        Response response = target
+                .request()
+                .post(entity);
+
+        Person updatedPerson = new Person("Óscar", "Belmonte Fernández", nif);
+        entity = Entity.entity(updatedPerson, MediaType.APPLICATION_XML_TYPE);
+        response = target
+                .path(nif)
+                .request()
+                .put(entity);
+
+        assertThat(response.getStatus(), is(Response.Status.NO_CONTENT.getStatusCode()));
     }
 }

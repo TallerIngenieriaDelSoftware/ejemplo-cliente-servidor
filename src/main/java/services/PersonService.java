@@ -4,6 +4,7 @@ import data.People;
 import data.Person;
 import data.PostalAddress;
 import es.uji.www.GeneradorDatosINE;
+import store.PersonDAO;
 import store.PersonStorage;
 
 import javax.inject.Inject;
@@ -29,12 +30,19 @@ public class PersonService {
     @Consumes({"application/xml", "application/json"})
     @Produces({"application/xml", "application/json"})
     public Response create(Person person) {
-        storage.create(person);
-        Person found = storage.retrieve(person.getNif());
-        return Response
-                .status(Response.Status.CREATED)
-                .entity(found)
-                .build();
+        Person retrievedPerson = storage.retrieve(person.getNif());
+        if(retrievedPerson == PersonDAO.NOT_FOUND) {
+            storage.create(person);
+            Person found = storage.retrieve(person.getNif());
+            return Response
+                    .status(Response.Status.CREATED)
+                    .entity(found)
+                    .build();
+        } else {
+            return Response
+                    .status(Response.Status.CONFLICT)
+                    .build();
+        }
     }
 
     @GET

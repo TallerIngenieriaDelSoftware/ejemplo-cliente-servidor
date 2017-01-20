@@ -15,7 +15,9 @@ public class BBDD implements DataStorage {
 
     @Override
     public Person retrievePerson(String nif) {
-        return people.get(nif);
+        if(people.containsKey(nif))
+            return people.get(nif);
+        else return PersonDAO.NOT_FOUND;
     }
 
     @Override
