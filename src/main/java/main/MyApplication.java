@@ -11,5 +11,6 @@ public class MyApplication extends ResourceConfig {
         packages("services");
         register(JacksonFeatures.class);
         register(new MyApplicationBinder());
+        register(new CrossOriginFilter());
     }
 }
