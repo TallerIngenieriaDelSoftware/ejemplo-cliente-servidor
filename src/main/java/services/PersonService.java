@@ -50,7 +50,7 @@ public class PersonService {
     @Path("{nif}")
     public Response retrieve(@PathParam("nif") String nif) {
         Person person = storage.retrieve(nif);
-        if (person != null)
+        if (person != PersonDAO.NOT_FOUND)
             return Response
                 .status(Response.Status.OK)
                 .entity(person)
@@ -65,7 +65,7 @@ public class PersonService {
     @Path("{nif}")
     public Response update(@PathParam("nif") String nif, Person person) {
         Person retrievePerson = storage.retrieve(nif);
-        if(retrievePerson != null) {
+        if(retrievePerson != PersonDAO.NOT_FOUND) {
             storage.update(person);
             return Response
                     .status(Response.Status.NO_CONTENT)
@@ -79,7 +79,7 @@ public class PersonService {
     @Path("{nif}")
     public Response delete(@PathParam("nif") String nif) {
         Person person = storage.retrieve(nif);
-        if(person != null) {
+        if(person != PersonDAO.NOT_FOUND) {
             storage.delete(nif);
             return Response
                     .status(Response.Status.NO_CONTENT)

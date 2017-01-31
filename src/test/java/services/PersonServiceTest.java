@@ -60,8 +60,10 @@ public class PersonServiceTest {
 
     @Test
     public void retrieveTest() {
-        // Primero nos aseguramos que existe
         String nif = "123";
+        // Primero borramos cualquiera que exista con ese nif
+        deleteByNif(nif);
+        // Ahora la creamos
         Person person = new Person("Óscar", "Belmonte", nif);
         createPerson(person);
 
@@ -72,6 +74,8 @@ public class PersonServiceTest {
 
         assertThat(response.getStatus(), is(Response.Status.OK.getStatusCode()));
         assertThat(response.readEntity(Person.class), is(person));
+//        System.out.println(person);
+//        System.out.println(response.readEntity(Person.class));
     }
 
     @Test
