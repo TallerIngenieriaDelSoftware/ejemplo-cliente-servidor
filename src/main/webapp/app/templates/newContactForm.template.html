@@ -1,0 +1,60 @@
+<div class="container" >
+  <h1>My awesom agenda</h1>
+
+  <div class="panel panel-default">
+    <!-- Default panel contents -->
+    <div class="panel-heading">Contacts</div>
+    <div class="panel-body">
+      <p>List of people</p>
+    </div>
+    <div class="form">
+      <div class="input-group">
+        <!--New Contact Form-->
+        <input [(ngModel)]="name" type="text" placeholder="Name">
+        <input [(ngModel)]="surname" type="text" placeholder="Surname">
+        <input [(ngModel)]="nif" type="text" placeholder="NIF">
+        <button type="submit" (click)="createContact(nif, name, surname)" class="btn btn-success">New</button>
+
+      </div>
+    </div>
+    <!--List of contacts-->
+    <table class="table">
+      <tr><th>Name</th><th>Surname</th><th>NIF</th><th></th></tr>
+      <tr *ngFor="let contact of contacts">
+        <td>{{contact.name}}</td>
+        <td>{{contact.surname}}</td>
+        <td>{{contact.nif}}</td>
+        <td><button type="submit" class="btn btn-info" data-toggle="modal" data-target="#actualizar"
+                    (click)="updateModal(contact.nif)">Update</button></td>
+        <td><button type="button" class="btn btn-danger" (click)="deleteContact(contact.nif)">Remove</button> </td>
+      </tr>
+    </table>
+
+
+    <!-- Ventana modal para actualizar -->
+    <div class="modal fade" id="actualizar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true" >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <h3>Updating contact</h3>
+            <h4 class="modal-title" id="myModalLabel">NIF: {{currentContact.nif}}</h4>
+          </div>
+          <div class="modal-body">
+            Name: <input type="text" [(ngModel)]="currentContact.name" >
+            Surname: <input type="text" [(ngModel)]="currentContact.surname" >
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-info"
+                    (click)="updateContact(currentContact)"
+                    data-dismiss="modal">Update</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+</div>
